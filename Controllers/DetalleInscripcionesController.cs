@@ -21,7 +21,10 @@ namespace Inscripciones.Controllers
         // GET: DetalleInscripciones
         public async Task<IActionResult> Index()
         {
-            var inscripcionesContext = _context.DetalleInscripcions.Include(d => d.Inscripcion).Include(d => d.Materia);
+            var inscripcionesContext = _context.DetalleInscripcions
+                .Include(d => d.Inscripcion)
+                .ThenInclude(i => i.Alumno)
+                .Include(d => d.Materia);
             return View(await inscripcionesContext.ToListAsync());
         }
 
@@ -48,8 +51,8 @@ namespace Inscripciones.Controllers
         // GET: DetalleInscripciones/Create
         public IActionResult Create()
         {
-            ViewData["InscripcionId"] = new SelectList(_context.Inscripcions, "Id", "Id");
-            ViewData["MateriaId"] = new SelectList(_context.Materias, "Id", "Id");
+            ViewData["InscripcionId"] = new SelectList(_context.Inscripcions.Include(i=>i.Alumno), "Id", "Inscripto");
+            ViewData["MateriaId"] = new SelectList(_context.Materias, "Id", "Nombre");
             return View();
         }
 

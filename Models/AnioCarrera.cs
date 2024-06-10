@@ -6,5 +6,11 @@
         public string Nombre { get; set; }
         public int CarreraId { get; set; }
         public Carrera? Carrera { get; set; }
+
+
+        public override string ToString()
+        {
+            return Nombre;
+        }
     }
 }
